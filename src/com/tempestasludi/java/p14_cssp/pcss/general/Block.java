@@ -100,7 +100,18 @@ public class Block implements Unit {
 	 */
 	@Override
 	public String toString() {
-		return "";
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < this.selectors.size(); i++) {
+			builder.append(this.selectors.get(i)).append(" ");
+		}
+		builder.append("{\n");
+		for (int i = 0; i < this.units.size(); i++) {
+			builder.append("\t");
+			builder.append(this.units.get(i).toString().replaceAll("\n", "\n\t").trim());
+			builder.append("\n");
+		}
+		builder.append("}");
+		return builder.toString();
 	}
 
 }

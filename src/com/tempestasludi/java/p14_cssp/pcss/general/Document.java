@@ -71,7 +71,12 @@ public class Document implements Unit {
 	 */
 	@Override
 	public String toString() {
-		return "";
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < this.blocks.size(); i++) {
+			builder.append(this.blocks.get(i).toString());
+			builder.append("\n");
+		}
+		return builder.toString();
 	}
 
 }

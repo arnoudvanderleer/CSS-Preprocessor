@@ -22,8 +22,7 @@ public class Tag extends Selector {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getName();
 	}
 
 }

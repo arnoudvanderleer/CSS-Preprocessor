@@ -22,8 +22,7 @@ public class Class extends Selector {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return new StringBuilder().append(".").append(this.getName()).toString();
 	}
 
 }

@@ -87,6 +87,10 @@ public class Property implements Unit {
 	 */
 	@Override
 	public String toString() {
-		return "";
+		StringBuilder builder = new StringBuilder().append(this.name);
+		if (this.value != null) {
+			builder.append(": ").append(this.value).append(";");
+		}
+		return builder.toString();
 	}
 }

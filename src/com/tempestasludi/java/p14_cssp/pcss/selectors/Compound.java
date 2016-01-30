@@ -77,8 +77,20 @@ public class Compound extends Selector {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < this.selectors.size(); i++) {
+			builder.append(this.selectors.get(i).toString());
+			String relation = this.relations.get(i);
+			if (i == this.selectors.size() - 1) {
+				continue;
+			}
+			if (relation.equals("") || relation.equals(" ")) {
+				builder.append(relation);
+			} else {
+				builder.append(" ").append(relation).append(" ");
+			}
+		}
+		return builder.toString();
 	}
 
 	/**

@@ -2,7 +2,7 @@ package com.tempestasludi.java.p14_cssp.pcss.properties;
 
 import java.util.ArrayList;
 
-import com.tempestasludi.java.p14_cssp.pcss.document.Unit;
+import com.tempestasludi.java.p14_cssp.pcss.general.Unit;
 
 /**
  * Property represents a CSS property.

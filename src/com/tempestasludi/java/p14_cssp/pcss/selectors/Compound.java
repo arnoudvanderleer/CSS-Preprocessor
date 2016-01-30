@@ -80,10 +80,10 @@ public class Compound extends Selector {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < this.selectors.size(); i++) {
 			builder.append(this.selectors.get(i).toString());
-			String relation = this.relations.get(i);
 			if (i == this.selectors.size() - 1) {
 				continue;
 			}
+			String relation = this.relations.get(i);
 			if (relation.equals("") || relation.equals(" ")) {
 				builder.append(relation);
 			} else {

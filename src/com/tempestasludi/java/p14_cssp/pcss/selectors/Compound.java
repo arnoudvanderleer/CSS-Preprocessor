@@ -21,10 +21,8 @@ public class Compound extends Selector {
 	
 	/**
 	 * Class constructor.
-	 *
-	 * @param value
 	 */
-	public Compound(String value, ArrayList<Selector> selectors, ArrayList<String> relations) {
+	public Compound(ArrayList<Selector> selectors, ArrayList<String> relations) {
 		super("");
 		this.selectors = new ArrayList<Selector>(selectors);
 		this.relations = new ArrayList<String>(relations);

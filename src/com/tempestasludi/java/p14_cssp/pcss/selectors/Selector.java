@@ -2,6 +2,8 @@ package com.tempestasludi.java.p14_cssp.pcss.selectors;
 
 import java.util.ArrayList;
 
+import com.tempestasludi.java.p14_cssp.pcss.general.Parser;
+
 /**
  * Selector represents a CSS selector.
  *
@@ -42,8 +44,77 @@ public abstract class Selector {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public static Selector read() {
+
+	/**
+	 * Reads a CSS selector into a Selector.
+	 *
+	 * @param selectorString
+	 *            the selector data to read
+	 * @return a document containing the file
+	 */
+	public static Selector read(String selectorString) {
+		ArrayList<Selector> selectors = new ArrayList<Selector>();
+		ArrayList<String> relations = new ArrayList<String>();
+		int i = 0;
+		selectorString = selectorString.trim().replaceAll("\\s?([>\\+~])\\s?", "$1");
+		ArrayList<Character> delimiters = new ArrayList<Character>();
+		delimiters.add(' ');
+		delimiters.add('>');
+		delimiters.add('+');
+		delimiters.add('~');
+		ArrayList<Character> selectorStarts = new ArrayList<Character>();
+		selectorStarts.add('[');
+		selectorStarts.add(':');
+		selectorStarts.add('.');
+		selectorStarts.add('#');
+		while (i < selectorString.length()) {
+			switch (selectorString.charAt(i)) {
+			case ' ':
+			case '>':
+			case '+':
+			case '~':
+				relations.add(new Character(selectorString.charAt(i)).toString());
+				break;
+			case '[':
+				int secondBracket = Parser.searchBracket(i, selectorString);
+				selectors.add(new Attribute(selectorString.substring(i, secondBracket)));
+				i = secondBracket + 1;
+				break;
+			case ':':
+			case '.':
+			case '#':
+				int j = i + 1;
+				while (j < selectorString.length() && !delimiters.contains(selectorString.charAt(j)) && !selectorStarts.contains(selectorString.charAt(j))) {
+					if (selectorString.charAt(j) == '(') {
+						j = Parser.searchBracket(j, selectorString);
+					}
+					j++;
+				}
+				String name = selectorString.substring(i + 1, j);
+				switch (selectorString.charAt(i)) {
+				case ':':
+					selectors.add(new PseudoClass(name));
+					break;
+				case '.':
+					selectors.add(new Class(name));
+					break;
+				case '#':
+					selectors.add(new Id(name));
+					break;
+				}
+				if (j < selectorString.length() && selectorStarts.contains(selectorString.charAt(j))) {
+					relations.add("");
+				}
+				i = j;
+				break;
+			}
+		}
+		if (selectors.size() > 1) {
+			return new Compound(selectors, relations);
+		}
+		else if (selectors.size() == 1) {
+			return selectors.get(i);
+		}
 		return null;
 	}
 

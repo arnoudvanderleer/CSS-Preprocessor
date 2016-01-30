@@ -1,4 +1,4 @@
-package com.tempestasludi.java.p14_cssp.pcss.document;
+package com.tempestasludi.java.p14_cssp.pcss.general;
 
 import java.util.ArrayList;
 

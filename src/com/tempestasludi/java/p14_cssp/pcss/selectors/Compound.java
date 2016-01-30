@@ -8,17 +8,18 @@ import java.util.ArrayList;
  * @author Tempestas Ludi
  */
 public class Compound extends Selector {
-	
+
 	/**
 	 * The selectors that make up this compound.
 	 */
 	private ArrayList<Selector> selectors;
-	
+
 	/**
-	 * The relations between the selectors (the n'th element describes the relation beteen selectors n and n+1).
+	 * The relations between the selectors (the n'th element describes the
+	 * relation beteen selectors n and n+1).
 	 */
 	private ArrayList<String> relations;
-	
+
 	/**
 	 * Class constructor.
 	 */
@@ -49,7 +50,8 @@ public class Compound extends Selector {
 	/**
 	 * Change the selectors
 	 *
-	 * @param selectors the selectors to change to
+	 * @param selectors
+	 *            the selectors to change to
 	 */
 	public void setSelectors(ArrayList<Selector> selectors) {
 		this.selectors = new ArrayList<Selector>(selectors);
@@ -58,7 +60,8 @@ public class Compound extends Selector {
 	/**
 	 * Change the relations
 	 *
-	 * @param relations the relations to change to
+	 * @param relations
+	 *            the relations to change to
 	 */
 	public void setRelations(ArrayList<String> relations) {
 		this.relations = new ArrayList<String>(relations);
@@ -72,5 +75,13 @@ public class Compound extends Selector {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) {
+			return false;
+		}
+		Compound other = (Compound) obj;
+		return (this.selectors.equals(other.getSelectors()) && this.relations.equals(other.getRelations()));
+	}
+
 }

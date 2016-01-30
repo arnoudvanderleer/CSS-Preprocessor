@@ -2,8 +2,6 @@ package com.tempestasludi.java.p14_cssp.pcss.selectors;
 
 import java.util.ArrayList;
 
-import javax.print.attribute.standard.MediaSize.Other;
-
 import com.tempestasludi.java.p14_cssp.pcss.general.Parser;
 
 /**
@@ -76,15 +74,14 @@ public abstract class Selector {
 			case '+':
 			case '~':
 				relations.add(new Character(selectorString.charAt(i)).toString());
+				i++;
 				break;
 			case '[':
 				int secondBracket = Parser.searchBracket(i, selectorString);
-				selectors.add(new Attribute(selectorString.substring(i, secondBracket)));
+				selectors.add(new Attribute(selectorString.substring(i + 1, secondBracket)));
 				i = secondBracket + 1;
 				break;
-			case ':':
-			case '.':
-			case '#':
+			default:
 				int j = i + 1;
 				while (j < selectorString.length() && !delimiters.contains(selectorString.charAt(j))
 						&& !selectorStarts.contains(selectorString.charAt(j))) {
@@ -104,6 +101,9 @@ public abstract class Selector {
 				case '#':
 					selectors.add(new Id(name));
 					break;
+				default:
+					selectors.add(new Tag(selectorString.substring(i, j)));
+					break;
 				}
 				if (j < selectorString.length() && selectorStarts.contains(selectorString.charAt(j))) {
 					relations.add("");
@@ -115,7 +115,7 @@ public abstract class Selector {
 		if (selectors.size() > 1) {
 			return new Compound(selectors, relations);
 		} else if (selectors.size() == 1) {
-			return selectors.get(i);
+			return selectors.get(0);
 		}
 		return null;
 	}

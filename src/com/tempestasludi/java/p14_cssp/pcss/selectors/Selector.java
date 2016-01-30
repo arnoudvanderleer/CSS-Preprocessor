@@ -20,6 +20,7 @@ public abstract class Selector {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the selector
 	 */
 	public Selector(String name) {
 		super();

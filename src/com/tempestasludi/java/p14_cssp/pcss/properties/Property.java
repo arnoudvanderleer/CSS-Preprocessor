@@ -15,7 +15,7 @@ public class Property implements Unit {
 	 * The name of the property.
 	 */
 	private String name;
-	
+
 	/**
 	 * The value of the property.
 	 */
@@ -25,7 +25,9 @@ public class Property implements Unit {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the property
 	 * @param value
+	 *            the value of the property
 	 */
 	public Property(String name, String value) {
 		super();

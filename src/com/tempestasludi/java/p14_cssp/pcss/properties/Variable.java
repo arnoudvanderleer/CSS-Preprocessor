@@ -25,6 +25,7 @@ public class Variable implements Unit {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the variable
 	 */
 	public Variable(String name) {
 		super();
@@ -35,7 +36,9 @@ public class Variable implements Unit {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the variable
 	 * @param value
+	 *            the value of the variable
 	 */
 	public Variable(String name, String value) {
 		super();
@@ -109,5 +112,5 @@ public class Variable implements Unit {
 			return false;
 		return true;
 	}
-	
+
 }

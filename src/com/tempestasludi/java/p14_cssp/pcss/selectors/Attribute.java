@@ -11,6 +11,7 @@ public class Attribute extends Selector {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the attribute
 	 */
 	public Attribute(String name) {
 		super(name);

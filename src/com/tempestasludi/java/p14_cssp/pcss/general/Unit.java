@@ -11,10 +11,12 @@ import com.tempestasludi.java.p14_cssp.pcss.properties.Variable;
  * @author Tempestas Ludi
  */
 public interface Unit {
-	
+
 	/**
 	 * Preprocesses the unit into CSS.
 	 *
+	 * @param variables
+	 *            the variables with values to fill in
 	 * @return the preprocessed version of the unit
 	 */
 	public Unit preprocess(ArrayList<Variable> variables);

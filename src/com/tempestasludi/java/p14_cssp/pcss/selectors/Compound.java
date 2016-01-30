@@ -22,6 +22,11 @@ public class Compound extends Selector {
 
 	/**
 	 * Class constructor.
+	 *
+	 * @param selectors
+	 *            the selectors that make up this compound
+	 * @param relations
+	 *            te relations between the selectors
 	 */
 	public Compound(ArrayList<Selector> selectors, ArrayList<String> relations) {
 		super("");
@@ -76,6 +81,9 @@ public class Compound extends Selector {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj)) {
 			return false;

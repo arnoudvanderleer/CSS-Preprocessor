@@ -11,10 +11,10 @@ public class Tag extends Selector {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the tag
 	 */
 	public Tag(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

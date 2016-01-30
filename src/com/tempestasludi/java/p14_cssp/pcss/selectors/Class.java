@@ -11,6 +11,7 @@ public class Class extends Selector {
 	 * Class constructor.
 	 *
 	 * @param name
+	 *            the name of the class
 	 */
 	public Class(String name) {
 		super(name);

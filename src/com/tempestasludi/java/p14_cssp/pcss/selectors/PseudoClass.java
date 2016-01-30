@@ -10,7 +10,8 @@ public class PseudoClass extends Selector {
 	/**
 	 * Class constructor.
 	 *
-	 * @param name the name of the selector
+	 * @param name
+	 *            the name of the pseudo class
 	 */
 	public PseudoClass(String name) {
 		super(name);

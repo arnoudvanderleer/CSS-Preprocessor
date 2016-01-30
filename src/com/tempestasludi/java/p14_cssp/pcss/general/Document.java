@@ -20,6 +20,7 @@ public class Document implements Unit {
 	 * Class constructor.
 	 *
 	 * @param blocks
+	 *            the CSS blocks of the document
 	 */
 	public Document(ArrayList<Block> blocks) {
 		super();
@@ -72,6 +73,5 @@ public class Document implements Unit {
 	public String toString() {
 		return "";
 	}
-
 
 }

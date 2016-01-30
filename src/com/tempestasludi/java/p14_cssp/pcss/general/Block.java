@@ -107,7 +107,11 @@ public class Block implements Unit {
 		builder.append("{\n");
 		for (int i = 0; i < this.units.size(); i++) {
 			builder.append("\t");
-			builder.append(this.units.get(i).toString().replaceAll("\n", "\n\t").trim());
+			String unitString = this.units.get(i).toString().replaceAll("\n", "\n\t");
+			if (i == this.units.size() - 1) {
+				unitString = unitString.trim();
+			}
+			builder.append(unitString);
 			builder.append("\n");
 		}
 		builder.append("}");

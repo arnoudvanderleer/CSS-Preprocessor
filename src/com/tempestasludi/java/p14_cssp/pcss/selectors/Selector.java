@@ -2,6 +2,8 @@ package com.tempestasludi.java.p14_cssp.pcss.selectors;
 
 import java.util.ArrayList;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import com.tempestasludi.java.p14_cssp.pcss.general.Parser;
 
 /**
@@ -84,7 +86,8 @@ public abstract class Selector {
 			case '.':
 			case '#':
 				int j = i + 1;
-				while (j < selectorString.length() && !delimiters.contains(selectorString.charAt(j)) && !selectorStarts.contains(selectorString.charAt(j))) {
+				while (j < selectorString.length() && !delimiters.contains(selectorString.charAt(j))
+						&& !selectorStarts.contains(selectorString.charAt(j))) {
 					if (selectorString.charAt(j) == '(') {
 						j = Parser.searchBracket(j, selectorString);
 					}
@@ -111,8 +114,7 @@ public abstract class Selector {
 		}
 		if (selectors.size() > 1) {
 			return new Compound(selectors, relations);
-		}
-		else if (selectors.size() == 1) {
+		} else if (selectors.size() == 1) {
 			return selectors.get(i);
 		}
 		return null;
@@ -122,5 +124,29 @@ public abstract class Selector {
 	 * {@inheritDoc}
 	 */
 	public abstract String toString();
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Selector other = (Selector) obj;
+		if (this.name == null) {
+			if (other.getName() != null)
+				return false;
+		} else if (!this.name.equals(other.getName())) {
+			return false;
+		}
+		return true;
+	}
 
 }

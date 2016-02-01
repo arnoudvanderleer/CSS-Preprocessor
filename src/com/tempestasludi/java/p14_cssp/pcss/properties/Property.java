@@ -105,18 +105,18 @@ public class Property implements Unit {
 		int firstBracketIndex = this.name.indexOf('{');
 		if (firstBracketIndex != -1) {
 			int secondBracketIndex = Parser.searchBracket(firstBracketIndex, this.name);
-			String[] forkParts = this.name.substring(firstBracketIndex + 1, secondBracketIndex).split("|");
+			String[] forkParts = this.name.substring(firstBracketIndex + 1, secondBracketIndex).split("\\|");
 			for (int i = 0; i < forkParts.length; i++) {
 				StringBuilder nameBuilder = new StringBuilder();
 				nameBuilder.append(this.name.substring(0, firstBracketIndex));
 				nameBuilder.append(forkParts[i]);
 				nameBuilder.append(this.name.substring(secondBracketIndex + 1));
-				result.addAll(new Property(nameBuilder.toString(), this.name).preprocess(variables));
+				result.addAll(new Property(nameBuilder.toString(), this.value).preprocess(variables));
 			}
 			return result;
 		}
 		for (int i = 0; i < variables.size(); i++) {
-			if (this.value.indexOf(variables.get(i).toString()) > -1) {
+			if (this.value.indexOf(variables.get(i).getName()) > -1) {
 				StringBuilder regexBuilder = new StringBuilder();
 				regexBuilder.append("\\$");
 				regexBuilder.append(variables.get(i).getName());

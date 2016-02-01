@@ -80,9 +80,10 @@ public class Variable implements Unit {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Unit preprocess(ArrayList<Variable> variables) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
+		variables.remove(this);
+		variables.add(this);
+		return new ArrayList<Unit>();
 	}
 
 	/**

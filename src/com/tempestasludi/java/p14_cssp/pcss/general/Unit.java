@@ -19,6 +19,6 @@ public interface Unit {
 	 *            the variables with values to fill in
 	 * @return the preprocessed version of the unit
 	 */
-	public Unit preprocess(ArrayList<Variable> variables);
+	public ArrayList<Unit> preprocess(ArrayList<Variable> variables);
 
 }

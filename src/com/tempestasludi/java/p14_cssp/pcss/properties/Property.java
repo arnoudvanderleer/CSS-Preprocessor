@@ -2,6 +2,7 @@ package com.tempestasludi.java.p14_cssp.pcss.properties;
 
 import java.util.ArrayList;
 
+import com.tempestasludi.java.p14_cssp.pcss.general.Parser;
 import com.tempestasludi.java.p14_cssp.pcss.general.Unit;
 
 /**
@@ -20,6 +21,19 @@ public class Property implements Unit {
 	 * The value of the property.
 	 */
 	private String value;
+
+	/**
+	 * An arrayList containing browser-specific CSS prefixes.
+	 */
+	private static ArrayList<String> browsers = new ArrayList<String>() {
+		{
+			add("-moz-");
+			add("-ms-");
+			add("-o-");
+			add("-webkit-");
+			add("");
+		}
+	};
 
 	/**
 	 * Class constructor.
@@ -77,9 +91,41 @@ public class Property implements Unit {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Unit preprocess(ArrayList<Variable> variables) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
+		ArrayList<Unit> result = new ArrayList<Unit>();
+		if (this.name.length() >= 10 && this.name.substring(0, 10).equals("-browsers-")) {
+			for (int i = 0; i < browsers.size(); i++) {
+				StringBuilder nameBuilder = new StringBuilder();
+				nameBuilder.append(browsers.get(i));
+				nameBuilder.append(this.name.substring(10));
+				result.addAll(new Property(nameBuilder.toString(), this.value).preprocess(variables));
+			}
+			return result;
+		}
+		int firstBracketIndex = this.name.indexOf('{');
+		if (firstBracketIndex != -1) {
+			int secondBracketIndex = Parser.searchBracket(firstBracketIndex, this.name);
+			String[] forkParts = this.name.substring(firstBracketIndex + 1, secondBracketIndex).split("|");
+			for (int i = 0; i < forkParts.length; i++) {
+				StringBuilder nameBuilder = new StringBuilder();
+				nameBuilder.append(this.name.substring(0, firstBracketIndex));
+				nameBuilder.append(forkParts[i]);
+				nameBuilder.append(this.name.substring(secondBracketIndex + 1));
+				result.addAll(new Property(nameBuilder.toString(), this.name).preprocess(variables));
+			}
+			return result;
+		}
+		for (int i = 0; i < variables.size(); i++) {
+			if (this.value.indexOf(variables.get(i).toString()) > -1) {
+				StringBuilder regexBuilder = new StringBuilder();
+				regexBuilder.append("\\$");
+				regexBuilder.append(variables.get(i).getName());
+				result.addAll(new Property(this.name, this.value.replaceAll(regexBuilder.toString(), variables.get(i).getValue())).preprocess(variables));
+				return result;
+			}
+		}
+		result.add(this);
+		return result;
 	}
 
 	/**

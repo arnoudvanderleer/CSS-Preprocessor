@@ -90,7 +90,7 @@ public class Block implements Unit {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Unit preprocess(ArrayList<Variable> variables) {
+	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
 		// TODO Auto-generated method stub
 		return null;
 	}

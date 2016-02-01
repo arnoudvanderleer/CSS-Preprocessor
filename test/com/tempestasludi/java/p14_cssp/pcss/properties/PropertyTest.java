@@ -58,7 +58,7 @@ public class PropertyTest {
 		variables.add(new Variable("color", "green"));
 		variables.add(new Variable("borderColor", "black"));
 		variables.add(new Variable("background", "1px solid green"));
-		variables.add(new Variable("borderColor", "black"));
+		variables.add(new Variable("borderSize", "1px"));
 		assertEquals(expected, property.preprocess(variables));
 	}
 

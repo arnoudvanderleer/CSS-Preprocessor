@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.tempestasludi.java.p14_cssp.pcss.general.Unit;
+
 public class VariableTest {
 
 	private Variable generate() {
@@ -48,7 +50,7 @@ public class VariableTest {
 	public void testPreprocessReturn() {
 		Variable variable = generate();
 		ArrayList<Variable> variables = new ArrayList<Variable>();
-		assertEquals(null, variable.preprocess(variables));
+		assertEquals(new ArrayList<Unit>(), variable.preprocess(variables));
 	}
 
 	@Test

@@ -2,7 +2,9 @@ package com.tempestasludi.java.p14_cssp.pcss.general;
 
 import java.util.ArrayList;
 
+import com.tempestasludi.java.p14_cssp.pcss.properties.Property;
 import com.tempestasludi.java.p14_cssp.pcss.properties.Variable;
+import com.tempestasludi.java.p14_cssp.pcss.selectors.Compound;
 import com.tempestasludi.java.p14_cssp.pcss.selectors.Selector;
 
 /**
@@ -83,7 +85,58 @@ public class Block implements Unit {
 	 * @return a document containing the file
 	 */
 	public static Block read(String block) {
-		return null;
+		block = block.trim();
+		int i = 0;
+		int selectorStart = 0;
+		ArrayList<Selector> selectors = new ArrayList<Selector>();
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		while (i < block.length()) {
+			if (block.charAt(i) == '"' || block.charAt(i) == '\'') {
+				i = Parser.searchStringEnd(i, block);
+			} else if (block.charAt(i) == ',') {
+				selectors.add(Compound.read(block.substring(selectorStart, i)));
+				selectorStart = i + 1;
+			} else if (block.charAt(i) == '{') {
+				selectors.add(Compound.read(block.substring(selectorStart, i)));
+				i++;
+				break;
+			}
+			i++;
+		}
+		int unitStart = i;
+		int colonPosition = -1;
+		while (i < block.length()) {
+			if (block.charAt(i) == '"' || block.charAt(i) == '\'') {
+				i = Parser.searchStringEnd(i, block);
+			} else if (block.charAt(i) == '(') {
+				i = Parser.searchBracket(i, block);
+			} else if (block.charAt(i) == '{') {
+				int endBracket = Parser.searchBracket(i, block);
+				if (!block.substring(i + 1, endBracket).matches("[a-zA-Z\\-]*")) {
+					units.add(Block.read(block.substring(unitStart, endBracket + 1)));
+					colonPosition = -1;
+					unitStart = i + 1;
+				}
+				i = endBracket;
+			} else if (block.charAt(i) == '$' && colonPosition == -1) {
+				int colon = block.indexOf(':', i);
+				int semicolon = block.indexOf(';', colon);
+				units.add(new Variable(block.substring(unitStart, colon).trim(),
+						block.substring(colon + 1, semicolon).trim()));
+				i = semicolon;
+				unitStart = i + 1;
+			} else if (block.charAt(i) == ':') {
+				colonPosition = i;
+			} else if (block.charAt(i) == ';') {
+				units.add(new Property(block.substring(unitStart, colonPosition).trim(),
+						block.substring(colonPosition + 1, i).trim()));
+				unitStart = i + 1;
+			} else if (block.charAt(i) == '{') {
+				break;
+			}
+			i++;
+		}
+		return new Block(selectors, units);
 	}
 
 	/**

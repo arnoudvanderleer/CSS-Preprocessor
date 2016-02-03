@@ -16,11 +16,11 @@ import com.tempestasludi.java.p14_cssp.pcss.selectors.Tag;
 
 public class BlockTest {
 
-	private Block generate() {
-		return new Block(this.generateSelectors(), this.generateUnits());
+	public static Block generate() {
+		return new Block(generateSelectors(), generateUnits());
 	}
 	
-	private ArrayList<Selector> generateSelectors() {
+	private static ArrayList<Selector> generateSelectors() {
 		ArrayList<Selector> result = new ArrayList<Selector>();
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
 		ArrayList<String> relations = new ArrayList<String>();
@@ -34,7 +34,7 @@ public class BlockTest {
 		return result;
 	}
 	
-	private ArrayList<Unit> generateUnits() {
+	private static ArrayList<Unit> generateUnits() {
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		units.add(new Variable("bc", "#ff0000"));
 		units.add(new Property("border-{top|left}", "1px solid $bc"));
@@ -48,19 +48,19 @@ public class BlockTest {
 	
 	@Test
 	public void testBlockSelectors() {
-		Block block = this.generate();
-		assertEquals(this.generateSelectors(), block.getSelectors());
+		Block block = generate();
+		assertEquals(generateSelectors(), block.getSelectors());
 	}
 	
 	@Test
 	public void testBlockUnits() {
-		Block block = this.generate();
-		assertEquals(this.generateUnits(), block.getUnits());
+		Block block = generate();
+		assertEquals(generateUnits(), block.getUnits());
 	}
 
 	@Test
 	public void testGetSetSelectors() {
-		Block block = this.generate();
+		Block block = generate();
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
 		selectors.add(new PseudoClass("pc"));
 		selectors.add(new Id("id"));
@@ -70,7 +70,7 @@ public class BlockTest {
 
 	@Test
 	public void testGetSetUnits() {
-		Block block = this.generate();
+		Block block = generate();
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		units.add(new Property("color", "green"));
 		block.setUnits(units);
@@ -87,19 +87,19 @@ public class BlockTest {
 				+ "\t}\n"
 				+ "}";
 		Block block = Block.read(blockString);
-		Block testBlock = this.generate();
+		Block testBlock = generate();
 		assertEquals(testBlock, block);
 	}
 
 	@Test
 	public void testPreprocess() {
-		Block block = this.generate();
+		Block block = generate();
 		ArrayList<Unit> testUnits = new ArrayList<Unit>();
 		
 		ArrayList<Unit> ownUnits = new ArrayList<Unit>();
 		ownUnits.add(new Property("border-top", "1px solid #ff0000"));
 		ownUnits.add(new Property("border-left", "1px solid #ff0000"));
-		testUnits.add(new Block(this.generateSelectors(), ownUnits));
+		testUnits.add(new Block(generateSelectors(), ownUnits));
 		
 		ArrayList<Selector> blockSelectors = new ArrayList<Selector>();
 
@@ -132,7 +132,7 @@ public class BlockTest {
 	
 	@Test
 	public void testToString() {
-		Block block = this.generate();
+		Block block = generate();
 		String testString = "div > .asdf-thing :nth-child(4), p {\n"
 				+ "\t$bc: #ff0000;\n"
 				+ "\tborder-{top|left}: 1px solid $bc;\n"
@@ -145,76 +145,76 @@ public class BlockTest {
 
 	@Test
 	public void testEqualsSelf() {
-		Block block = this.generate();
+		Block block = generate();
 		assertEquals(block, block);
 	}
 	
 	@Test
 	public void testEqualsCopy() {
-		Block block = this.generate();
-		Block copy = this.generate();
+		Block block = generate();
+		Block copy = generate();
 		assertEquals(block, block);
 	}
 
 	@Test
 	public void testEqualsNull() {
-		Block block = this.generate();
+		Block block = generate();
 		assertFalse(block.equals(null));
 	}
 
 	@Test
 	public void testEqualsSelectorAddition() {
-		Block block = this.generate();
-		ArrayList<Selector> selectors = this.generateSelectors();
+		Block block = generate();
+		ArrayList<Selector> selectors = generateSelectors();
 		selectors.add(new Tag("h1"));
-		Block addition = new Block(selectors, this.generateUnits());
+		Block addition = new Block(selectors, generateUnits());
 		assertFalse(block.equals(addition));
 	}
 
 	@Test
 	public void testEqualsUnitAddition() {
-		Block block = this.generate();
-		ArrayList<Unit> units = this.generateUnits();
+		Block block = generate();
+		ArrayList<Unit> units = generateUnits();
 		units.add(new Property("color", "green"));
-		Block addition = new Block(this.generateSelectors(), units);
+		Block addition = new Block(generateSelectors(), units);
 		assertFalse(block.equals(addition));
 	}
 
 	@Test
 	public void testEqualsSelectorRemoval() {
-		Block block = this.generate();
-		ArrayList<Selector> selectors = this.generateSelectors();
+		Block block = generate();
+		ArrayList<Selector> selectors = generateSelectors();
 		selectors.remove(selectors.size() - 1);
-		Block removal = new Block(selectors, this.generateUnits());
+		Block removal = new Block(selectors, generateUnits());
 		assertFalse(block.equals(removal));
 	}
 
 	@Test
 	public void testEqualsUnitRemoval() {
-		Block block = this.generate();
-		ArrayList<Unit> units = this.generateUnits();
+		Block block = generate();
+		ArrayList<Unit> units = generateUnits();
 		units.remove(units.size() - 1);
-		Block removal = new Block(this.generateSelectors(), units);
+		Block removal = new Block(generateSelectors(), units);
 		assertFalse(block.equals(removal));
 	}
 
 	@Test
 	public void testEqualsSelectorReplacement() {
-		Block block = this.generate();
-		ArrayList<Selector> selectors = this.generateSelectors();
+		Block block = generate();
+		ArrayList<Selector> selectors = generateSelectors();
 		selectors.remove(selectors.size() - 1);
 		selectors.add(new Tag("h1"));
-		Block replacement = new Block(selectors, this.generateUnits());
+		Block replacement = new Block(selectors, generateUnits());
 		assertFalse(block.equals(replacement));
 	}
 
 	@Test
 	public void testEqualsUnitReplacement() {
-		Block block = this.generate();
-		ArrayList<Unit> units = this.generateUnits();
+		Block block = generate();
+		ArrayList<Unit> units = generateUnits();
 		units.remove(units.size() - 1);
 		units.add(new Property("color", "green"));
-		Block replacement = new Block(this.generateSelectors(), units);
+		Block replacement = new Block(generateSelectors(), units);
 		assertFalse(block.equals(replacement));
 	}
 

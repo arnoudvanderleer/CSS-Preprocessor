@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.tempestasludi.java.p14_cssp.pcss.properties.Property;
 import com.tempestasludi.java.p14_cssp.pcss.properties.Variable;
-import com.tempestasludi.java.p14_cssp.pcss.selectors.Compound;
 import com.tempestasludi.java.p14_cssp.pcss.selectors.Selector;
 
 /**
@@ -94,10 +93,10 @@ public class Block implements Unit {
 			if (block.charAt(i) == '"' || block.charAt(i) == '\'') {
 				i = Parser.searchStringEnd(i, block);
 			} else if (block.charAt(i) == ',') {
-				selectors.add(Compound.read(block.substring(selectorStart, i)));
+				selectors.add(Selector.read(block.substring(selectorStart, i)));
 				selectorStart = i + 1;
 			} else if (block.charAt(i) == '{') {
-				selectors.add(Compound.read(block.substring(selectorStart, i)));
+				selectors.add(Selector.read(block.substring(selectorStart, i)));
 				i++;
 				break;
 			}
@@ -171,4 +170,31 @@ public class Block implements Unit {
 		return builder.toString();
 	}
 
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Block other = (Block) obj;
+		if (selectors == null) {
+			if (other.selectors != null)
+				return false;
+		} else if (!selectors.equals(other.selectors))
+			return false;
+		if (units == null) {
+			if (other.units != null)
+				return false;
+		} else if (!units.equals(other.units))
+			return false;
+		return true;
+	}
+	
 }

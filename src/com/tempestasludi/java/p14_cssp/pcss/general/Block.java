@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.tempestasludi.java.p14_cssp.pcss.properties.Property;
 import com.tempestasludi.java.p14_cssp.pcss.properties.Variable;
+import com.tempestasludi.java.p14_cssp.pcss.selectors.Compound;
 import com.tempestasludi.java.p14_cssp.pcss.selectors.Selector;
 
 /**
@@ -111,7 +112,7 @@ public class Block implements Unit {
 				i = Parser.searchBracket(i, block);
 			} else if (block.charAt(i) == '{') {
 				int endBracket = Parser.searchBracket(i, block);
-				if (!block.substring(i + 1, endBracket).matches("[a-zA-Z\\-]*")) {
+				if (!block.substring(i + 1, endBracket).matches("[a-zA-Z\\-\\|]*")) {
 					units.add(Block.read(block.substring(unitStart, endBracket + 1)));
 					colonPosition = -1;
 					unitStart = i + 1;
@@ -120,7 +121,7 @@ public class Block implements Unit {
 			} else if (block.charAt(i) == '$' && colonPosition == -1) {
 				int colon = block.indexOf(':', i);
 				int semicolon = block.indexOf(';', colon);
-				units.add(new Variable(block.substring(unitStart, colon).trim(),
+				units.add(new Variable(block.substring(i + 1, colon).trim(),
 						block.substring(colon + 1, semicolon).trim()));
 				i = semicolon;
 				unitStart = i + 1;
@@ -143,8 +144,51 @@ public class Block implements Unit {
 	 */
 	@Override
 	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Variable> newVariables = new ArrayList<Variable>(variables);
+		ArrayList<Unit> newUnits = new ArrayList<Unit>();
+		ArrayList<Block> newBlocks = new ArrayList<Block>();
+		ArrayList<Unit> resultBlocks = new ArrayList<Unit>();
+		for (int i = 0; i < this.units.size(); i++) {
+			ArrayList<Unit> addUnits = this.units.get(i).preprocess(newVariables);
+			for (int j = 0; j < addUnits.size(); j++) {
+				if (addUnits.get(j) instanceof Block) {
+					newBlocks.add((Block) addUnits.get(j));
+				}
+				else {
+					newUnits.add(addUnits.get(j));
+				}
+			}
+		}
+		this.units = newUnits;
+		resultBlocks.add(this);
+		for (int i = 0; i < newBlocks.size(); i++) {
+			ArrayList<Selector> blockSelectors = newBlocks.get(i).getSelectors();
+			ArrayList<Selector> newBlockSelectors = new ArrayList<Selector>();
+			for (int j = 0; j < this.selectors.size(); j++) {
+				for (int k = 0; k < blockSelectors.size(); k++) {
+					ArrayList<Selector> compoundSelectors = new ArrayList<Selector>();
+					ArrayList<String> compoundRelations = new ArrayList<String>();
+					Selector ownSelector = this.selectors.get(i);
+					Selector blockSelector = blockSelectors.get(i);
+					if (ownSelector instanceof Compound) {
+						compoundSelectors.addAll(((Compound) ownSelector).getSelectors());
+						compoundRelations.addAll(((Compound) ownSelector).getRelations());
+					} else {
+						compoundSelectors.add(ownSelector);
+					}
+					compoundRelations.add(" ");
+					if (blockSelector instanceof Compound) {
+						compoundSelectors.addAll(((Compound) blockSelector).getSelectors());
+						compoundRelations.addAll(((Compound) blockSelector).getRelations());
+					} else {
+						compoundSelectors.add(blockSelector);
+					}
+					newBlockSelectors.add(new Compound(compoundSelectors, compoundRelations));
+				}
+			}
+			resultBlocks.add(new Block(newBlockSelectors, newBlocks.get(i).getUnits()));
+		}
+		return resultBlocks;
 	}
 
 	/**
@@ -154,7 +198,13 @@ public class Block implements Unit {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < this.selectors.size(); i++) {
-			builder.append(this.selectors.get(i)).append(" ");
+			builder.append(this.selectors.get(i));
+			if (i == this.selectors.size() - 1) {
+				builder.append(" ");
+			}
+			else {
+				builder.append(", ");
+			}
 		}
 		builder.append("{\n");
 		for (int i = 0; i < this.units.size(); i++) {
@@ -169,8 +219,6 @@ public class Block implements Unit {
 		builder.append("}");
 		return builder.toString();
 	}
-
-
 
 	/**
 	 * {@inheritDoc}
@@ -196,5 +244,5 @@ public class Block implements Unit {
 			return false;
 		return true;
 	}
-	
+
 }

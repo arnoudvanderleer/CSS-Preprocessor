@@ -14,7 +14,7 @@ public class Document implements Unit {
 	/**
 	 * The CSS blocks of the document.
 	 */
-	public ArrayList<Block> blocks;
+	public ArrayList<Unit> units;
 
 	/**
 	 * Class constructor.
@@ -22,9 +22,9 @@ public class Document implements Unit {
 	 * @param blocks
 	 *            the CSS blocks of the document
 	 */
-	public Document(ArrayList<Block> blocks) {
+	public Document(ArrayList<Unit> units) {
 		super();
-		this.blocks = new ArrayList<Block>(blocks);
+		this.units = new ArrayList<Unit>(units);
 	}
 
 	/**
@@ -32,8 +32,8 @@ public class Document implements Unit {
 	 *
 	 * @return the blocks
 	 */
-	public ArrayList<Block> getBlocks() {
-		return new ArrayList<Block>(blocks);
+	public ArrayList<Unit> getUnits() {
+		return new ArrayList<Unit>(units);
 	}
 
 	/**
@@ -42,8 +42,8 @@ public class Document implements Unit {
 	 * @param blocks
 	 *            the blocks to change to
 	 */
-	public void setBlocks(ArrayList<Block> blocks) {
-		this.blocks = new ArrayList<Block>(blocks);
+	public void setUnits(ArrayList<Unit> units) {
+		this.units = new ArrayList<Unit>(units);
 	}
 
 	/**
@@ -54,7 +54,12 @@ public class Document implements Unit {
 	 * @return a document containing the file
 	 */
 	public static Document read(String file) {
-		return null;
+		StringBuilder builder = new StringBuilder();
+		builder.append("p {");
+		builder.append(file);
+		builder.append("}");
+		Block block = Block.read(builder.toString());
+		return new Document(block.getUnits());
 	}
 
 	/**
@@ -62,8 +67,13 @@ public class Document implements Unit {
 	 */
 	@Override
 	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Unit> newUnits = new ArrayList<Unit>();
+		for (int i = 0; i < this.units.size(); i++) {
+			newUnits.addAll(this.units.get(i).preprocess(variables));
+		}
+		ArrayList<Unit> result = new ArrayList<Unit>();
+		result.add(new Document(newUnits));
+		return result;
 	}
 
 	/**
@@ -72,11 +82,33 @@ public class Document implements Unit {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < this.blocks.size(); i++) {
-			builder.append(this.blocks.get(i).toString());
+		for (int i = 0; i < this.units.size(); i++) {
+			builder.append(this.units.get(i).toString());
 			builder.append("\n");
 		}
 		return builder.toString();
+	}
+
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Document other = (Document) obj;
+		if (units == null) {
+			if (other.units != null)
+				return false;
+		} else if (!units.equals(other.units))
+			return false;
+		return true;
 	}
 
 }

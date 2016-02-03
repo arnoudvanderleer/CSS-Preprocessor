@@ -153,8 +153,7 @@ public class Block implements Unit {
 			for (int j = 0; j < addUnits.size(); j++) {
 				if (addUnits.get(j) instanceof Block) {
 					newBlocks.add((Block) addUnits.get(j));
-				}
-				else {
+				} else {
 					newUnits.add(addUnits.get(j));
 				}
 			}
@@ -168,8 +167,8 @@ public class Block implements Unit {
 				for (int k = 0; k < blockSelectors.size(); k++) {
 					ArrayList<Selector> compoundSelectors = new ArrayList<Selector>();
 					ArrayList<String> compoundRelations = new ArrayList<String>();
-					Selector ownSelector = this.selectors.get(i);
-					Selector blockSelector = blockSelectors.get(i);
+					Selector ownSelector = this.selectors.get(j);
+					Selector blockSelector = blockSelectors.get(k);
 					if (ownSelector instanceof Compound) {
 						compoundSelectors.addAll(((Compound) ownSelector).getSelectors());
 						compoundRelations.addAll(((Compound) ownSelector).getRelations());
@@ -201,8 +200,7 @@ public class Block implements Unit {
 			builder.append(this.selectors.get(i));
 			if (i == this.selectors.size() - 1) {
 				builder.append(" ");
-			}
-			else {
+			} else {
 				builder.append(", ");
 			}
 		}

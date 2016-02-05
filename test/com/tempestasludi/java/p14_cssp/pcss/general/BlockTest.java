@@ -20,7 +20,7 @@ public class BlockTest {
 		return new Block(generateSelectors(), generateUnits());
 	}
 
-	private static ArrayList<Selector> generateSelectors() {
+	public static ArrayList<Selector> generateSelectors() {
 		ArrayList<Selector> result = new ArrayList<Selector>();
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
 		ArrayList<String> relations = new ArrayList<String>();
@@ -143,7 +143,7 @@ public class BlockTest {
 	public void testEqualsCopy() {
 		Block block = generate();
 		Block copy = generate();
-		assertEquals(block, block);
+		assertEquals(block, copy);
 	}
 
 	@Test

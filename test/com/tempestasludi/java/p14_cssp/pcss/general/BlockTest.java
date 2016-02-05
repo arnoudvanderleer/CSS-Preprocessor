@@ -19,7 +19,7 @@ public class BlockTest {
 	public static Block generate() {
 		return new Block(generateSelectors(), generateUnits());
 	}
-	
+
 	private static ArrayList<Selector> generateSelectors() {
 		ArrayList<Selector> result = new ArrayList<Selector>();
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
@@ -33,7 +33,7 @@ public class BlockTest {
 		result.add(new Tag("p"));
 		return result;
 	}
-	
+
 	private static ArrayList<Unit> generateUnits() {
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		units.add(new Variable("bc", "#ff0000"));
@@ -45,13 +45,13 @@ public class BlockTest {
 		units.add(new Block(blockSelectors, blockUnits));
 		return units;
 	}
-	
+
 	@Test
 	public void testBlockSelectors() {
 		Block block = generate();
 		assertEquals(generateSelectors(), block.getSelectors());
 	}
-	
+
 	@Test
 	public void testBlockUnits() {
 		Block block = generate();
@@ -79,13 +79,8 @@ public class BlockTest {
 
 	@Test
 	public void testRead() {
-		String blockString = "div > .asdf-thing :nth-child(4), p {\n"
-				+ "\t$bc: #ff0000;\n"
-				+ "\tborder-{top|left}: 1px solid $bc;\n"
-				+ "\t.sub {\n"
-				+ "\t\tcolor: $bc;\n"
-				+ "\t}\n"
-				+ "}";
+		String blockString = "div > .asdf-thing :nth-child(4), p {\n" + "\t$bc: #ff0000;\n"
+				+ "\tborder-{top|left}: 1px solid $bc;\n" + "\t.sub {\n" + "\t\tcolor: $bc;\n" + "\t}\n" + "}";
 		Block block = Block.read(blockString);
 		Block testBlock = generate();
 		assertEquals(testBlock, block);
@@ -95,12 +90,12 @@ public class BlockTest {
 	public void testPreprocess() {
 		Block block = generate();
 		ArrayList<Unit> testUnits = new ArrayList<Unit>();
-		
+
 		ArrayList<Unit> ownUnits = new ArrayList<Unit>();
 		ownUnits.add(new Property("border-top", "1px solid #ff0000"));
 		ownUnits.add(new Property("border-left", "1px solid #ff0000"));
 		testUnits.add(new Block(generateSelectors(), ownUnits));
-		
+
 		ArrayList<Selector> blockSelectors = new ArrayList<Selector>();
 
 		ArrayList<Selector> blockSelectorsList = new ArrayList<Selector>();
@@ -114,7 +109,7 @@ public class BlockTest {
 		blockSelectorsList.add(new com.tempestasludi.java.p14_cssp.pcss.selectors.Class("sub"));
 		Selector blockSelector = new Compound(blockSelectorsList, blockRelationList);
 		blockSelectors.add(blockSelector);
-		
+
 		blockSelectorsList = new ArrayList<Selector>();
 		blockRelationList = new ArrayList<String>();
 		blockSelectorsList.add(new Tag("p"));
@@ -122,24 +117,19 @@ public class BlockTest {
 		blockSelectorsList.add(new com.tempestasludi.java.p14_cssp.pcss.selectors.Class("sub"));
 		blockSelector = new Compound(blockSelectorsList, blockRelationList);
 		blockSelectors.add(blockSelector);
-		
+
 		ArrayList<Unit> blockUnits = new ArrayList<Unit>();
 		blockUnits.add(new Property("color", "#ff0000"));
 		testUnits.add(new Block(blockSelectors, blockUnits));
-		
+
 		assertEquals(testUnits, block.preprocess(new ArrayList<Variable>()));
 	}
-	
+
 	@Test
 	public void testToString() {
 		Block block = generate();
-		String testString = "div > .asdf-thing :nth-child(4), p {\n"
-				+ "\t$bc: #ff0000;\n"
-				+ "\tborder-{top|left}: 1px solid $bc;\n"
-				+ "\t.sub {\n"
-				+ "\t\tcolor: $bc;\n"
-				+ "\t}\n"
-				+ "}";
+		String testString = "div > .asdf-thing :nth-child(4), p {\n" + "\t$bc: #ff0000;\n"
+				+ "\tborder-{top|left}: 1px solid $bc;\n" + "\t.sub {\n" + "\t\tcolor: $bc;\n" + "\t}\n" + "}";
 		assertEquals(testString, block.toString());
 	}
 
@@ -148,7 +138,7 @@ public class BlockTest {
 		Block block = generate();
 		assertEquals(block, block);
 	}
-	
+
 	@Test
 	public void testEqualsCopy() {
 		Block block = generate();

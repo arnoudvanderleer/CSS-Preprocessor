@@ -113,7 +113,6 @@ public class Block implements Unit {
 	 * @return an array containing the contents of the block
 	 */
 	public static ArrayList<Unit> readContents(String block) {
-		System.out.println(block);
 		int i = 0;
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		int unitStart = i;

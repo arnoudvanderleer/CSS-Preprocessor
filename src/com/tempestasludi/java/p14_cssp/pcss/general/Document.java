@@ -54,12 +54,7 @@ public class Document implements Unit {
 	 * @return a document containing the file
 	 */
 	public static Document read(String file) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("p {");
-		builder.append(file);
-		builder.append("}");
-		Block block = Block.read(builder.toString());
-		return new Document(block.getUnits());
+		return new Document(Block.readContents(file));
 	}
 
 	/**
@@ -83,8 +78,11 @@ public class Document implements Unit {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < this.units.size(); i++) {
-			builder.append(this.units.get(i).toString());
+			builder.append(this.units.get(i).toString().trim());
 			builder.append("\n");
+			if (i != this.units.size() - 1 && this.units.get(i) instanceof Block) {
+				builder.append("\n");
+			}
 		}
 		return builder.toString();
 	}

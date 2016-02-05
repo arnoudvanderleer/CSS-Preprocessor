@@ -89,7 +89,6 @@ public class Block implements Unit {
 		int i = 0;
 		int selectorStart = 0;
 		ArrayList<Selector> selectors = new ArrayList<Selector>();
-		ArrayList<Unit> units = new ArrayList<Unit>();
 		while (i < block.length()) {
 			if (block.charAt(i) == '"' || block.charAt(i) == '\'') {
 				i = Parser.searchStringEnd(i, block);
@@ -103,6 +102,20 @@ public class Block implements Unit {
 			}
 			i++;
 		}
+		ArrayList<Unit> units = readContents(block.substring(i));
+		return new Block(selectors, units);
+	}
+
+	/**
+	 * Reads the contents of a CSS block into an arrayList.
+	 *
+	 * @param block the block string to read
+	 * @return an array containing the contents of the block
+	 */
+	public static ArrayList<Unit> readContents(String block) {
+		System.out.println(block);
+		int i = 0;
+		ArrayList<Unit> units = new ArrayList<Unit>();
 		int unitStart = i;
 		int colonPosition = -1;
 		while (i < block.length()) {
@@ -115,7 +128,7 @@ public class Block implements Unit {
 				if (!block.substring(i + 1, endBracket).matches("[a-zA-Z\\-\\|]*")) {
 					units.add(Block.read(block.substring(unitStart, endBracket + 1)));
 					colonPosition = -1;
-					unitStart = i + 1;
+					unitStart = endBracket + 1;
 				}
 				i = endBracket;
 			} else if (block.charAt(i) == '$' && colonPosition == -1) {
@@ -131,12 +144,12 @@ public class Block implements Unit {
 				units.add(new Property(block.substring(unitStart, colonPosition).trim(),
 						block.substring(colonPosition + 1, i).trim()));
 				unitStart = i + 1;
-			} else if (block.charAt(i) == '{') {
+			} else if (block.charAt(i) == '}') {
 				break;
 			}
 			i++;
 		}
-		return new Block(selectors, units);
+		return units;
 	}
 
 	/**

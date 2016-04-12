@@ -23,17 +23,9 @@ public class Property implements Unit {
 	private String value;
 
 	/**
-	 * An arrayList containing browser-specific CSS prefixes.
+	 * The browser-specific CSS prefixes.
 	 */
-	private static ArrayList<String> browsers = new ArrayList<String>() {
-		{
-			add("-moz-");
-			add("-ms-");
-			add("-o-");
-			add("-webkit-");
-			add("");
-		}
-	};
+	private static String[] browsers = {"-moz-", "-ms-", "-o-", "-webkit-", ""};
 
 	/**
 	 * Class constructor.
@@ -94,9 +86,9 @@ public class Property implements Unit {
 	public ArrayList<Unit> preprocess(ArrayList<Variable> variables) {
 		ArrayList<Unit> result = new ArrayList<Unit>();
 		if (this.name.length() >= 10 && this.name.substring(0, 10).equals("-browsers-")) {
-			for (int i = 0; i < browsers.size(); i++) {
+			for (int i = 0; i < browsers.length; i++) {
 				StringBuilder nameBuilder = new StringBuilder();
-				nameBuilder.append(browsers.get(i));
+				nameBuilder.append(browsers[i]);
 				nameBuilder.append(this.name.substring(10));
 				result.addAll(new Property(nameBuilder.toString(), this.value).preprocess(variables));
 			}

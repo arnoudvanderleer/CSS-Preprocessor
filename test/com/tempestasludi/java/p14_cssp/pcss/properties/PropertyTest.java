@@ -71,7 +71,6 @@ public class PropertyTest {
 		expected.add(new Property("-webkit-border-radius", "1px"));
 		expected.add(new Property("border-radius", "1px"));
 		Property property = new Property("-browsers-border-radius", "1px");
-		ArrayList<Variable> variables = new ArrayList<Variable>();
 		assertEquals(expected, property.preprocess(new ArrayList<Variable>()));
 	}
 
